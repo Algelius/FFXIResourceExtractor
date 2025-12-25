@@ -7,7 +7,16 @@ internal class ShiftJISFF11Encoding(ShiftJISFF11Encoding.Context context) : Enco
 	public enum Context { None, Dialog }
 
 	public static readonly Encoding ShiftJISFF11 = new ShiftJISFF11Encoding();
-
+	
+	//helper
+	private static void WriteString(char[] chars, ref int written, int charIndex, string text)
+	{
+	    foreach (char c in text)
+	    {
+	        chars[charIndex + written] = c;
+	        written++;
+	    }
+	}
 	public ShiftJISFF11Encoding()
 		: this(Context.None) {
 	}
@@ -63,6 +72,20 @@ internal class ShiftJISFF11Encoding(ShiftJISFF11Encoding.Context context) : Enco
 		var written = 0;
 		for (var i = begin; i < end; i++) {
 			int b = bytes[i];
+			// Handle FFXI element icons (example values, replace with real bytes)
+			/*switch (b)
+			{
+			    case 0x87: // Light icon byte
+			        WriteString(chars, ref written, charIndex, "<Element: Light>");
+			        continue;
+			
+			    case 0x88: // Dark icon byte
+			        WriteString(chars, ref written, charIndex, "<Element: Dark>");
+			        continue;
+			
+			    // add other element icons as needed...
+			}*/
+			Console.Write($"{b:X2} ");
 			if (b == 0xFD) {
 				chars[charIndex + written] = '\uF7FD';
 				written++;
